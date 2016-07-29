@@ -1,0 +1,74 @@
+import evdev
+import threading
+import argparse
+import os
+import re
+from ctypes import cdll
+from evdev import InputDevice, categorize, ecodes
+from threading import Event
+from os import readlink
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t",
+                        "--timeout",
+                        help="specify a timeout interval between 1 and infinity",
+                        type=int,
+                        required=True)
+
+    parser.add_argument("-d",
+                        "--device_id",
+                        help="specify a device id in /dev/input/by-id",
+                        required=True)
+
+    args = parser.parse_args()
+    d = readlink('/dev/input/by-id/{}'.format(args.device_id))
+
+    device = evdev.InputDevice(re.sub('../', '/dev/input/', d))
+
+    mouse = Mouse(args.timeout, device)
+    mouse.start()
+
+    run_sensor(mouse)
+
+def run_sensor(mouse):
+    axis = ecodes.EV_REL
+    button = ecodes.EV_KEY
+
+    for event in mouse.device.read_loop():
+        type = event.type
+
+        # only true if a mouse button is down
+        if type == button and categorize(event).keystate == 1:
+            mouse.activity.set()
+
+        # only true when mouse is moved on relative axis
+        elif type == ecodes.EV_REL:
+            mouse.activity.set()
+
+class Mouse:
+    def __init__(self, timeout, device):
+        mousetrap = cdll.LoadLibrary('{}/lib/libmousetrap.so'.format(PREFIX))
+
+        self.hide_pointer = mousetrap.hide_pointer
+        self.activity = Event()
+        self.timeout = timeout
+        self.device = device
+
+    def start(self):
+        wait = threading.Thread(target=self.wait, args=())
+        wait.start()
+
+    def wait(self):
+        while True:
+            self.activity.wait(self.timeout)
+
+            if self.activity.isSet():
+                self.activity.clear();
+            else:
+                self.hide_pointer()
+
+
+if __name__ == "__main__":
+    main()

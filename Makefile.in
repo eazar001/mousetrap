@@ -1,0 +1,38 @@
+SRCFILES = mousetrap.rs protocol.rs mousetrap.py
+SRC = $(SRCFILES:%=src/%)
+DEPS = target/release/deps
+
+TARGETS = target/release/libmousetrap.so
+
+
+.PHONY: all
+all: $(TARGETS)
+
+$(TARGETS): $(SRC)
+	cargo build --release
+
+.PHONY: install
+install: $(TARGETS)
+	mkdir -p $(PREFIX)/lib
+	mkdir -p $(PREFIX)/bin
+	cp -ar $(TARGETS) $(PREFIX)/lib
+	cp -ar src/mousetrap.py $(PREFIX)/bin/mousetrap
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/lib/mousetrap.so
+	rm -f $(PREFIX)/bin/mousetrap
+
+.PHONY: dist
+dist: distclean
+	cd ../ && tar -vczf mousetrap.tar.gz mousetrap
+	mv ../mousetrap.tar.gz .
+
+.PHONY: clean
+clean:
+	cargo clean
+
+.PHONY: distclean
+distclean:
+	cargo clean
+	rm -f mousetrap.tar.gz Makefile src/mousetrap.py

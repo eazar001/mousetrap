@@ -1,0 +1,15 @@
+[package]
+name = "mousetrap"
+version = "0.1.0"
+authors = ["Ebrahim Azarisooreh <ebrahim.azarisooreh@gmail.com>"]
+
+[lib]
+name = "mousetrap"
+crate-type = ["dylib"]
+
+[dependencies]
+libc = "0.2.14"
+
+[dependencies.x11]
+features = ["xlib"]
+version = "2.7.0"
