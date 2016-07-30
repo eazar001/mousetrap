@@ -31,7 +31,9 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 
 ### How do I install this?
 
-In order to build this application you need:
+Do you have Arch linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
+
+Otherwise, In order to build this application you need:
 * The `Rust` compiler and its build tool, `Cargo` (https://www.rust-lang.org/)
 * `Python` >= 3.5 (https://www.python.org)
 * `python-evdev` library (http://python-evdev.readthedocs.io/en/latest/install.html)
@@ -40,6 +42,7 @@ First, give your user permission to read events from `/dev/input` with:
 ```
 # gpasswd -a user input
 ```
+
 `user` in the above snippet, should of course, be replaced with your actual username.
 
 Next, build and install with:
@@ -53,12 +56,13 @@ Next, locate your device-id by executing the command below. Then figure out whic
 ```
 $ ls /dev/input/by-id
 ```
+
 Finally, assuming that the path you installed `mousetrap` to is in your `$PATH`:
 ```
 $ mousetrap -t 10 -d my_device_id
 ```
 
-`my_device_id` should be replaced with the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time, in seconds.
+`my_device_id` should be replaced with the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time, in seconds. All flag options are _absolutely_ mandatory.
 
 ### Final notes
 
