@@ -49,7 +49,7 @@ $ make
 $ make install
 ```
 
-Next, locate your device-id by doing and figure out which one is your mouse:
+Next, locate your device-id by executing the command below. Then figure out which one in the listing is your mouse:
 ```
 $ ls /dev/input/by-id
 ```
