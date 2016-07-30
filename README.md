@@ -24,7 +24,7 @@ The other programs I've encountered had one or more of the following issues:
 * Resets the timer on motion, but not on button presses
 * Resets the timer on button presses, but not on motion
 * Reactivates mouse on click, but does not register the click on the window
-* Program predictably fails after a short amount of timer
+* Program predictably fails after a short amount of time
 * Does not work on tiling window managers like mine (Xmonad WM)
 * Works on tiling window managers, but fails to hide when sitting in between windows
 
