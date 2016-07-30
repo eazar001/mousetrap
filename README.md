@@ -26,7 +26,7 @@ The other programs I've encountered had one or more of the following issues:
 * Reactivates mouse on click, but does not register the click on the window
 * Program predictably fails after a short amount of timer
 * Does not work on tiling window managers like mine (Xmonad WM)
-* Does not work on tiling window managers at all
+* Works on tiling window managers, but fails to hide when sitting in between windows
 
 The mere presence of any of the above issues is sufficient for me not to use such a program.
 
@@ -48,7 +48,7 @@ $ make
 $ make install
 ```
 
-Next, located your device-id by doing and figure out which one is your mouse:
+Next, locate your device-id by doing and figure out which one is your mouse:
 ```
 $ ls /dev/input/by-id
 ```
@@ -56,7 +56,8 @@ Finally, assuming that the path you installed `mousetrap` to is in your `$PATH`:
 ```
 $ mousetrap -t 10 -d my_device_id
 ```
-`my_device_id` is the filename you've determined corresponds to your mouse, from the previous step.
+
+`my_device_id` is the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time.
 
 ### Final notes
 
