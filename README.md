@@ -35,6 +35,7 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 In order to build this application you need:
 * The `Rust` compiler and its build tool, `Cargo` (https://www.rust-lang.org/)
 * `Python` >= 3.5 (https://www.python.org)
+* `python-evdev` library (http://python-evdev.readthedocs.io/en/latest/install.html)
 
 First, give your user permission to read events from `/dev/input` with:
 ```
