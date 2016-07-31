@@ -13,15 +13,15 @@ $(TARGETS): $(SRC)
 
 .PHONY: install
 install: $(TARGETS)
-	mkdir -p $(PREFIX)/lib
-	mkdir -p $(PREFIX)/bin
-	cp -ar $(TARGETS) $(PREFIX)/lib
-	cp -ar src/mousetrap.py $(PREFIX)/bin/mousetrap
+	mkdir -p $(DESTDIR)$(PREFIX)/lib/mousetrap
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	install -Dm 755 $(TARGETS) $(DESTDIR)$(PREFIX)/lib/mousetrap
+	install -Dm 755 src/mousetrap.py $(DESTDIR)$(PREFIX)/bin/mousetrap
 
 .PHONY: uninstall
 uninstall:
-	rm -f $(PREFIX)/lib/mousetrap.so
-	rm -f $(PREFIX)/bin/mousetrap
+	rm -rf $(DESTDIR)$(PREFIX)/lib/mousetrap
+	rm -f $(DESTDIR)$(PREFIX)/bin/mousetrap
 
 .PHONY: dist
 dist: distclean

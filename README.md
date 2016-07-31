@@ -5,8 +5,7 @@ without activity.
 
 ### What is this?
 
-This is a small utility for linux desktops that hide the mouse during periods
-of inactivity. When the user does need to use the mouse again, the mouse pointer will be unhidden so that normal use can resume. Some users tend to get distracted when reading or working with a mouse pointer that sits over the content. This is very similar to programs like `hhp`, `hhpc`, `unclutter`, etc.
+This is a small utility for linux desktops that hides the mouse during periods of inactivity. When the user does need to use the mouse again, the mouse pointer will be unhidden so that normal use can resume. Some users tend to get distracted when reading or working with a mouse pointer that sits over the content. This is very similar to programs like `hhp`, `hhpc`, `unclutter`, etc.
 
 The process flow of `mousetrap` is as follows:
 
@@ -32,7 +31,9 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 
 ### How do I install this?
 
-In order to build this application you need:
+Do you have Arch linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
+
+Otherwise, In order to build this application you need:
 * The `Rust` compiler and its build tool, `Cargo` (https://www.rust-lang.org/)
 * `Python` >= 3.5 (https://www.python.org)
 * `python-evdev` library (http://python-evdev.readthedocs.io/en/latest/install.html)
@@ -41,6 +42,8 @@ First, give your user permission to read events from `/dev/input` with:
 ```
 # gpasswd -a user input
 ```
+
+`user` in the above snippet, should of course, be replaced with your actual username.
 
 Next, build and install with:
 ```
@@ -53,12 +56,13 @@ Next, locate your device-id by executing the command below. Then figure out whic
 ```
 $ ls /dev/input/by-id
 ```
+
 Finally, assuming that the path you installed `mousetrap` to is in your `$PATH`:
 ```
 $ mousetrap -t 10 -d my_device_id
 ```
 
-`my_device_id` is the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time.
+`my_device_id` should be replaced with the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time, in seconds. All flag options are _absolutely_ mandatory.
 
 ### Final notes
 
