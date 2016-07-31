@@ -44,12 +44,12 @@ def run_sensor(mouse):
             mouse.activity.set()
 
         # only true when mouse is moved on relative axis
-        elif type == ecodes.EV_REL:
+        elif type == axis:
             mouse.activity.set()
 
 class Mouse:
     def __init__(self, timeout, device):
-        mousetrap = cdll.LoadLibrary('{}/lib/libmousetrap.so'.format(PREFIX))
+        mousetrap = cdll.LoadLibrary('{}/lib/mousetrap/libmousetrap.so'.format(PREFIX))
 
         self.hide_pointer = mousetrap.hide_pointer
         self.activity = Event()
