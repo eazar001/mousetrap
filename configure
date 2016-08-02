@@ -1,11 +1,5 @@
 #!/bin/sh
 
-if [ -z "$PREFIX" ]; then
-    echo "PREFIX = /usr/local" > Makefile
-    printf "#!/usr/bin/env python\nPREFIX=\"/usr/local\"\n\n" > src/mousetrap.py
-    cat "mousetrap.in" >> src/mousetrap.py
-    chmod a+x src/mousetrap.py
-fi
 
 for arg in "$@"; do
     case "$arg" in
@@ -19,6 +13,13 @@ for arg in "$@"; do
 
     esac
 done
+
+if [ -z "$PREFIX" ]; then
+    echo "PREFIX = /usr/local" > Makefile
+    printf "#!/usr/bin/env python\nPREFIX=\"/usr/local\"\n\n" > src/mousetrap.py
+    cat "mousetrap.in" >> src/mousetrap.py
+    chmod a+x src/mousetrap.py
+fi
 
 cat Makefile.in >> Makefile
 
