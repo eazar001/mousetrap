@@ -3,6 +3,7 @@ use x11::xlib::*;
 
 use std::mem::zeroed;
 use std::ptr::null;
+use std::os::raw::c_long;
 
 pub fn grab_pointer(dpy: *mut Display,
                     win: Window,
@@ -27,14 +28,7 @@ pub fn ungrab_pointer(dpy: *mut Display) {
     unsafe { XUngrabPointer(dpy, CurrentTime) };
 }
 
-#[cfg(target_pointer_width="64")]
-pub fn replay_events(dpy: *mut Display, mask: i64, event: &mut XEvent) {
-    mask_event(dpy, mask, event);
-    unsafe { XAllowEvents(dpy, ReplayPointer, CurrentTime) };
-}
-
-#[cfg(target_pointer_width="32")]
-pub fn replay_events(dpy: *mut Display, mask: i32, event: &mut XEvent) {
+pub fn replay_events(dpy: *mut Display, mask: c_long, event: &mut XEvent) {
     mask_event(dpy, mask, event);
     unsafe { XAllowEvents(dpy, ReplayPointer, CurrentTime) };
 }
@@ -43,13 +37,7 @@ pub fn init_xevent() -> XEvent {
     unsafe { zeroed() }
 }
 
-#[cfg(target_pointer_width="64")]
-pub fn mask_event(dpy: *mut Display, mask: i64, event_return: *mut XEvent) {
-    unsafe { XMaskEvent(dpy, mask, event_return) };
-}
-
-#[cfg(target_pointer_width="32")]
-pub fn mask_event(dpy: *mut Display, mask: i32, event_return: *mut XEvent) {
+pub fn mask_event(dpy: *mut Display, mask: c_long, event_return: *mut XEvent) {
     unsafe { XMaskEvent(dpy, mask, event_return) };
 }
 
