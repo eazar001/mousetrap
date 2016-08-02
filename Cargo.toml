@@ -1,6 +1,6 @@
 [package]
 name = "mousetrap"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Ebrahim Azarisooreh <ebrahim.azarisooreh@gmail.com>"]
 
 [lib]
