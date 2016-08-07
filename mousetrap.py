@@ -2,11 +2,12 @@ import evdev
 import threading
 import argparse
 import os
+import sys
 import re
-from ctypes import cdll
+from os import readlink
 from evdev import InputDevice, categorize, ecodes
 from threading import Event
-from os import readlink
+from Xlib.display import Display
 
 
 def main():
@@ -27,7 +28,16 @@ def main():
 
     device = evdev.InputDevice(re.sub('../', '/dev/input/', d))
 
-    mouse = Mouse(args.timeout, device)
+    display = Display()
+    if not display.has_extension('XFIXES'):
+        if display.query_extension('XFIXES') is None:
+            print('XFIXES extension not supported', file=sys.stderr)
+            return 1
+
+    xfixes_version = display.xfixes_query_version()
+    screen = display.screen()
+
+    mouse = Mouse(display, screen, args.timeout, device)
     mouse.start()
 
     run_sensor(mouse)
@@ -48,26 +58,33 @@ def run_sensor(mouse):
             mouse.activity.set()
 
 class Mouse:
-    def __init__(self, timeout, device):
-        mousetrap = cdll.LoadLibrary('{}/lib/mousetrap/libmousetrap.so'.format(PREFIX))
-
-        self.hide_pointer = mousetrap.hide_pointer
+    def __init__(self, display, screen, timeout, device):
         self.activity = Event()
         self.timeout = timeout
         self.device = device
+        self.display = display
+        self.screen = screen
 
     def start(self):
         wait = threading.Thread(target=self.wait, args=())
         wait.start()
 
     def wait(self):
+        screen = self.screen
+        display = self.display
+
         while True:
             self.activity.wait(self.timeout)
 
             if self.activity.isSet():
                 self.activity.clear();
             else:
-                self.hide_pointer()
+                screen.root.xfixes_hide_cursor()
+                display.sync()
+                self.activity.wait()
+
+                screen.root.xfixes_show_cursor()
+                display.sync()
 
 
 if __name__ == "__main__":

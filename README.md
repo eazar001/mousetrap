@@ -34,9 +34,9 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 Do you have Arch linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
 
 Otherwise, In order to build this application you need:
-* The `Rust` compiler and its build tool, `Cargo` (https://www.rust-lang.org/)
 * `Python` >= 3.5 (https://www.python.org)
 * `python-evdev` library (http://python-evdev.readthedocs.io/en/latest/install.html)
+* `python-xlib` library (https://github.com/python-xlib/python-xlib)
 
 First, give your user permission to read events from `/dev/input` with:
 ```
@@ -48,7 +48,6 @@ First, give your user permission to read events from `/dev/input` with:
 Next, build and install with:
 ```
 $ ./configure --prefix=/PATH/TO
-$ make
 $ make install
 ```
 
@@ -69,5 +68,3 @@ $ mousetrap -t 10 -d my_device_id
 This was intended to work with my distro (Arch Linux). In theory, it should work with other linux distros as well. If not, I'm sorry. With a little persistence, I'm sure you can modify things to make it work with your distro if any of its idiosyncrasies stand in your way. Pull requests are welcome.
 
 My mouse's device ID happens to be persistent. If your system setup for any reason is given to caprice in this respect, then you may need to look into writing a udev rule to ensure that these attributes remain consistent.
-
-I'm sorry if there are too many steps or dependencies, but I only rewrote things to work where others (in my opinion) failed.
