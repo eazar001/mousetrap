@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import evdev
 import threading
 import argparse
