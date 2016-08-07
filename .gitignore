@@ -1,4 +1,2 @@
-target
 Makefile
-mousetrap.py
-Cargo.lock
+mousetrap/mousetrap.py
