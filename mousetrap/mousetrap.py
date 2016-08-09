@@ -4,7 +4,6 @@ import threading
 import argparse
 import os
 import sys
-import re
 from threading import Event
 from Xlib.display import Display
 from Xlib import X
@@ -20,17 +19,10 @@ def main():
                         type=int,
                         required=True)
 
-    parser.add_argument("-d",
-                        "--device_id",
-                        help="specify a device id in /dev/input/by-id",
-                        required=True)
-
     args = parser.parse_args()
-    d = readlink('/dev/input/by-id/{}'.format(args.device_id))
-
-    device = evdev.InputDevice(re.sub('../', '/dev/input/', d))
 
     display = Display()
+
     if not display.has_extension('XFIXES'):
         if display.query_extension('XFIXES') is None:
             print('XFIXES extension not supported', file=sys.stderr)
@@ -39,7 +31,7 @@ def main():
     xfixes_version = display.xfixes_query_version()
     screen = display.screen()
 
-    mouse = Mouse(display, screen, args.timeout, device)
+    mouse = Mouse(display, screen, args.timeout)
     mouse.start()
 
     run_sensor(mouse)
@@ -51,6 +43,7 @@ def run_sensor(mouse):
     if not record_dpy.has_extension("RECORD"):
         print("RECORD extension not found")
         sys.exit(1)
+
     r = record_dpy.record_get_version(0, 0)
 
 
@@ -104,10 +97,9 @@ def record_callback(record_dpy, mouse):
     return rc
 
 class Mouse:
-    def __init__(self, display, screen, timeout, device):
+    def __init__(self, display, screen, timeout):
         self.activity = Event()
         self.timeout = timeout
-        self.device = device
         self.display = display
         self.screen = screen
 
@@ -123,7 +115,7 @@ class Mouse:
             self.activity.wait(self.timeout)
 
             if self.activity.isSet():
-                self.activity.clear();
+                self.activity.clear()
             else:
                 screen.root.xfixes_hide_cursor()
                 display.sync()
