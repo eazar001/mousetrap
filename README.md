@@ -31,40 +31,23 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 
 ### How do I install this?
 
-Do you have Arch linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
+Do you have Arch Linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
 
 Otherwise, In order to build this application you need:
-* `Python` >= 3.5 (https://www.python.org)
-* `python-evdev` library (http://python-evdev.readthedocs.io/en/latest/install.html)
+* `Python` >= 3.0 (https://www.python.org)
 * `python-xlib` library (https://github.com/python-xlib/python-xlib)
 
-First, give your user permission to read events from `/dev/input` with:
-```
-# gpasswd -a user input
-```
+After you've met the dependencies above, you may proceed to the first step below.
 
-`user` in the above snippet, should of course, be replaced with your actual username.
-
-Next, build and install with:
+First, install with:
 ```
 $ ./configure --prefix=/PATH/TO
 $ make install
 ```
 
-Next, locate your device-id by executing the command below. Then figure out which one in the listing is your mouse:
+Then, assuming that the path you installed `mousetrap` to is in your `$PATH`:
 ```
-$ ls /dev/input/by-id
-```
-
-Finally, assuming that the path you installed `mousetrap` to is in your `$PATH`:
-```
-$ mousetrap -t 10 -d my_device_id
+$ mousetrap -t 10
 ```
 
-`my_device_id` should be replaced with the filename you've determined corresponds to your mouse, from the previous step. The `-t` flag specifies your preferred idle time, in seconds. All flag options are _absolutely_ mandatory.
-
-### Final notes
-
-This was intended to work with my distro (Arch Linux). In theory, it should work with other linux distros as well. If not, I'm sorry. With a little persistence, I'm sure you can modify things to make it work with your distro if any of its idiosyncrasies stand in your way. Pull requests are welcome.
-
-My mouse's device ID happens to be persistent. If your system setup for any reason is given to caprice in this respect, then you may need to look into writing a udev rule to ensure that these attributes remain consistent.
+The `-t` flag specifies your preferred idle time, in seconds. All flag options are _absolutely_ mandatory.
