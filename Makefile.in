@@ -20,4 +20,4 @@ clean: distclean
 
 .PHONY: distclean
 distclean:
-	rm -f mousetrap.tar.gz Makefile mousetrap/mousetrap.py
+	rm -f mousetrap.tar.gz Makefile
