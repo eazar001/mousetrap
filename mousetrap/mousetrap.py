@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-import evdev
 import threading
 import argparse
 import os
 import sys
 import re
-from os import readlink
-from evdev import InputDevice, categorize, ecodes
 from threading import Event
 from Xlib.display import Display
+from Xlib import X
+from Xlib.ext import record
+from Xlib.protocol import rq
 
 
 def main():
@@ -45,19 +45,63 @@ def main():
     run_sensor(mouse)
 
 def run_sensor(mouse):
-    axis = ecodes.EV_REL
-    button = ecodes.EV_KEY
+    record_dpy = Display()
 
-    for event in mouse.device.read_loop():
-        type = event.type
+    # Check if the extension is present
+    if not record_dpy.has_extension("RECORD"):
+        print("RECORD extension not found")
+        sys.exit(1)
+    r = record_dpy.record_get_version(0, 0)
 
-        # only true if a mouse button is down
-        if type == button and categorize(event).keystate == 1:
-            mouse.activity.set()
 
-        # only true when mouse is moved on relative axis
-        elif type == axis:
-            mouse.activity.set()
+    # Create a recording context; we only want key and mouse events
+    ctx = record_dpy.record_create_context(
+        0,
+        [record.AllClients],
+        [{
+                'core_requests': (0, 0),
+                'core_replies': (0, 0),
+                'ext_requests': (0, 0, 0, 0),
+                'ext_replies': (0, 0, 0, 0),
+                'delivered_events': (0, 0),
+                'device_events': (X.ButtonPress, X.MotionNotify),
+                'errors': (0, 0),
+                'client_started': False,
+                'client_died': False,
+        }])
+
+    # Enable the context; this only returns after a call to record_disable_context,
+    # while calling the callback function in the meantime
+    record_dpy.record_enable_context(ctx, record_callback(record_dpy, mouse))
+
+    # Finally free the context
+    record_dpy.record_free_context(ctx)
+
+def record_callback(record_dpy, mouse):
+    def rc(reply):
+        if reply.category != record.FromServer:
+            return
+        if reply.client_swapped:
+            print("* received swapped protocol data, cowardly ignored")
+            return
+        if not len(reply.data) or reply.data[0] < 2:
+            # not an event
+            return
+
+        data = reply.data
+
+        while len(data):
+            event, data = rq.EventField(None).parse_binary_value(data,
+                                                                 record_dpy.display,
+                                                                 None,
+                                                                 None)
+
+            if event.type == X.ButtonPress:
+                mouse.activity.set()
+            elif event.type == X.MotionNotify:
+                mouse.activity.set()
+
+    return rc
 
 class Mouse:
     def __init__(self, display, screen, timeout, device):
