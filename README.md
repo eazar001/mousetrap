@@ -33,15 +33,14 @@ The mere presence of any of the above issues is sufficient for me not to use suc
 
 Do you have Arch Linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
 
-Otherwise, In order to build this application you need:
-* `Python` >= 3.0 (https://www.python.org)
-* `python-xlib` library (https://github.com/python-xlib/python-xlib)
+Otherwise, In order to build this application you need to install `Python` >= 3.0 (https://www.python.org)
 
-After you've met the dependencies above, you may proceed to the first step below.
+After the installation, you may proceed to the first step below.
 
 First, install with:
 ```
 $ ./configure --prefix=/PATH/TO
+$ make
 $ make install
 ```
 
