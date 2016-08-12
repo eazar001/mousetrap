@@ -10,6 +10,12 @@ from Xlib import X
 from Xlib.ext import record
 from Xlib.protocol import rq
 
+"""
+Much of this application was derived from the example code that can be found at
+https://github.com/python-xlib/python-xlib/blob/master/examples/record_demo.py
+
+The event recording code in that script has been refitted for mousetrap's specific purposes
+"""
 
 def main():
     parser = argparse.ArgumentParser()
@@ -29,6 +35,11 @@ def main():
             return 1
 
     xfixes_version = display.xfixes_query_version()
+    print('Found XFIXES version %s.%s' % (
+        xfixes_version.major_version,
+        xfixes_version.minor_version,
+    ), file=sys.stderr)
+
     screen = display.screen()
 
     mouse = Mouse(display, screen, args.timeout)
@@ -45,6 +56,7 @@ def run_sensor(mouse):
         sys.exit(1)
 
     r = record_dpy.record_get_version(0, 0)
+    print("RECORD extension version %d.%d" % (r.major_version, r.minor_version))
 
 
     # Create a recording context; we only want key and mouse events
