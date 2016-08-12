@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(name='mousetrap',
-      version='3.0.3',
+      version='3.0.4',
       description='An X11 utility that hides the mouse pointer after a specified interval of time',
       long_description=readme(),
       classifiers=[

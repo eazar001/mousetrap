@@ -43,10 +43,7 @@ After the installation, you may proceed to the first step below.
 
 First, install with::
 
-    $ ./configure --prefix=/PATH/TO
-    $ make
-    $ make install
-
+    $ python setup.py install
 
 Then, assuming that the path you installed `mousetrap` to is in your `$PATH`::
 
