@@ -1,9 +1,11 @@
-# mousetrap
+mousetrap
+=========
 
 A utility that hides the mouse after a specified interval of time has elapsed
 without activity.
 
-### What is this?
+What is this?
+-------------
 
 This is a small utility for linux desktops that hides the mouse during periods of inactivity. When the user does need to use the mouse again, the mouse pointer will be unhidden so that normal use can resume. Some users tend to get distracted when reading or working with a mouse pointer that sits over the content. This is very similar to programs like `hhp`, `hhpc`, `unclutter`, etc.
 
@@ -16,7 +18,8 @@ The process flow of `mousetrap` is as follows:
 
 If there is activity (i.e. click or movement) before the amount of time has elapsed in step 1, then the timer is reset and control remains in step 1.
 
-### What's wrong with the others?
+What's wrong with the others?
+-----------------------------
 
 The other programs I've encountered had one or more of the following issues:
 
@@ -29,7 +32,8 @@ The other programs I've encountered had one or more of the following issues:
 
 The mere presence of any of the above issues is sufficient for me not to use such a program.
 
-### How do I install this?
+How do I install this?
+----------------------
 
 Do you have Arch Linux? Great, if so you can skip the rest of the instructions at the bottom and install it directly from the AUR: https://aur.archlinux.org/packages/mousetrap/
 
@@ -37,16 +41,16 @@ Otherwise, In order to build this application you need to install `Python` >= 3.
 
 After the installation, you may proceed to the first step below.
 
-First, install with:
-```
-$ ./configure --prefix=/PATH/TO
-$ make
-$ make install
-```
+First, install with::
 
-Then, assuming that the path you installed `mousetrap` to is in your `$PATH`:
-```
-$ mousetrap -t 10
-```
+    $ ./configure --prefix=/PATH/TO
+    $ make
+    $ make install
+
+
+Then, assuming that the path you installed `mousetrap` to is in your `$PATH`::
+
+    $ mousetrap -t 10
+
 
 The `-t` flag specifies your preferred idle time, in seconds. All flag options are _absolutely_ mandatory.
