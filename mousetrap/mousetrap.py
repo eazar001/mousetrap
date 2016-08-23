@@ -132,6 +132,7 @@ class Mouse:
                 screen.root.xfixes_hide_cursor()
                 display.sync()
                 self.activity.wait()
+                self.activity.clear()
 
                 screen.root.xfixes_show_cursor()
                 display.sync()
