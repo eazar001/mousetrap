@@ -55,13 +55,14 @@ The `-t` flag specifies your preferred idle time, in seconds. All flag options a
 Issues
 ------
 
-Some users have reported seeing an error of the form:
-```
-Xlib.error.DisplayConnectionError: Can't connect to display ":0": b'Invalid MIT-MAGIC-COOKIE-1 key'
-```
-@deepakshantilalshah claims that the example command below is a workaround for such issues:
-```
-DISPLAY=:0 mousetrap -t 10
-```
+Some users have reported seeing an error of the form::
+
+    Xlib.error.DisplayConnectionError: Can't connect to display ":0": b'Invalid MIT-MAGIC-COOKIE-1 key'
+
+
+@deepakshantilalshah claims that the example command below is a workaround for such issues::
+
+    DISPLAY=:0 mousetrap -t 10
+
 
 See https://github.com/eazar001/mousetrap/issues/5 for more information.
